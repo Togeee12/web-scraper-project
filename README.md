@@ -101,5 +101,5 @@ This project is licensed under the MIT License - see the [LICENSE](https://opens
 
 ## Acknowledgments
 
-- This project was created by [Togeee12].
+- This project was created by [Togeee12](github.com/Togeee12).
 - Special thanks to the developers of the Python libraries used in this project.
