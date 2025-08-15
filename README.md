@@ -51,12 +51,12 @@ python main.py --url <website_url> --output <terminal|file> [--country <country_
 
 - Output to terminal:
   ```sh
-  python main.py --url https://kasprzak.edu.pl --output terminal
+  python main.py --url https://check.me --output terminal
   ```
 
 - Output to file:
   ```sh
-  python main.py --url https://kasprzak.edu.pl --output file
+  python main.py --url https://check.me --output file
   ```
 
 ---
