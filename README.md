@@ -1,105 +1,112 @@
+# Web Scraper Project
 
-# Web Scraping Tool
+A modern Python tool for extracting links, emails, social media profiles, author names, and phone numbers from any website. Output results directly to your terminal or save them to a file.
 
-A Python script for web scraping that extracts various types of data (links, email addresses, social media links, author names, and phone numbers) from a given URL. It provides both terminal and file-based output options.
+---
 
-## Table of Contents
+## 🚀 Features
 
-- [Web Scraping Tool](#web-scraping-tool)
-  - [Table of Contents](#table-of-contents)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-  - [Usage](#usage)
-    - [Running the Script](#running-the-script)
-    - [Output Options](#output-options)
-      - [Terminal Output](#terminal-output)
-      - [File Output](#file-output)
-  - [Dependencies](#dependencies)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Acknowledgments](#acknowledgments)
+- Extracts:
+  - Links
+  - Email addresses
+  - Social media links (e.g., Facebook)
+  - Author names
+  - Phone numbers
+- Output to terminal or file
+- Easy command-line usage
+- Colorful terminal output (with Colorama)
+- Modular codebase for easy extension
 
-## Getting Started
+---
 
-### Prerequisites
+## 📦 Installation
 
-Before running the script, you need to have Python 3.x installed on your system. If you don't have it, you can download it from the [official Python website](https://www.python.org/downloads/).
-
-### Installation
-
-1. Clone this repository to your local machine using Git or download it as a ZIP archive and extract it.
-
-2. Navigate to the project directory:
-
-   ```shell
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/Togeee12/web-scraper-project.git
    cd web-scraper-project
    ```
 
-3. Install the required Python dependencies using pip:
-
-   ```shell
+2. **Install dependencies:**
+   ```sh
    pip install -r requirements.txt
    ```
 
-## Usage
+---
 
-### Running the Script
+## 📝 Usage
 
-1. Run the `urlScrapper.py` script:
+Run the scraper from the command line:
 
-   ```shell
-   python urlScrapper.py
-   ```
+```sh
+python main.py --url <website_url> --output <terminal|file> [--country <country_code>]
+```
 
-2. Enter the URL you want to scrape when prompted.
+**Arguments:**
+- `--url` (required): The website URL to scrape.
+- `--output` (required): Output mode, either `terminal` or `file`.
+- `--country` (optional): Country code for phone number extraction (e.g., `PL`).
 
-3. Choose the output format:
-   - Enter `1` for terminal output.
-   - Enter `2` to save the data to a file.
+**Examples:**
 
-### Output Options
+- Output to terminal:
+  ```sh
+  python main.py --url https://kasprzak.edu.pl --output terminal
+  ```
 
-#### Terminal Output
+- Output to file:
+  ```sh
+  python main.py --url https://kasprzak.edu.pl --output file
+  ```
 
-If you choose terminal output (`1`), the script will display the following information in the terminal:
+---
 
-- Extracted Links
-- Extracted Email Addresses
-- Extracted Facebook Links
-- Extracted Author Names
-- Extracted Phone Numbers
+## 🗂️ Project Structure
 
-#### File Output
+```
+web-scraper-project/
+├── config.json
+├── CONTRIBUTING.md
+├── main.py
+├── README.md
+├── requirements.txt
+└── scraper/
+    ├── extractors.py
+    ├── output.py
+    └── scraper.py
+```
 
-If you choose file output (`2`), you will be prompted to enter a filename. The script will save the extracted data to a file with the following structure:
+---
 
-- Scraped data from [URL]
-  - Links
-  - Email Addresses
-  - Facebook Links
-  - Author Names
-  - Phone Numbers
+## 🛠️ Dependencies
 
-## Dependencies
+- [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
+- [requests](https://pypi.org/project/requests/)
+- [colorama](https://pypi.org/project/colorama/)
+- [phonenumbers](https://pypi.org/project/phonenumbers/)
 
-This project relies on the following Python libraries, which are listed in the `requirements.txt` file:
 
-- `beautifulsoup4`: Used for parsing HTML content.
-- `requests`: Used for making HTTP requests to fetch HTML content.
-- `colorama`: Used for terminal text color formatting.
+Install all dependencies with:
+```sh
+pip install -r requirements.txt
+```
 
-You can install these dependencies using the `pip install -r requirements.txt` command, as mentioned in the installation instructions.
+---
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome! If you have any improvements, bug fixes, or new features to add, please open an issue or create a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+Contributions are welcome!  
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/license/mit/) file for details.
+## 📄 License
 
-## Acknowledgments
+MIT License. See [LICENSE](https://opensource.org/license/mit/) for details.
 
-- This project was created by [Togeee12](github.com/Togeee12).
-- Special thanks to the developers of the Python libraries used in this project.
+---
+
+## 🙏 Acknowledgments
+
+- Created by [Togeee12](https://github.com/Togeee12)
+- Thanks to the developers of the Python libraries
