@@ -61,54 +61,95 @@ def install_missing_packages():
 
 install_missing_packages()
 
-def scrape_recursive(url, depth=1, max_depth=1, visited=None, country="US"):
-    """Recursively scrape a website up to specified depth."""
+def scrape_recursive(url, depth=1, max_depth=1, visited=None, country="US", accumulated_data=None):
+    """Recursively scrape a website up to specified depth with deduplication."""
     if visited is None:
         visited = set()
+    
+    if accumulated_data is None:
+        accumulated_data = {
+            "links": set(),
+            "emails": set(),
+            "social": {},
+            "authors": set(),
+            "phones": set(),
+            "images": set(),
+            "metadata": {},
+            "documents": set(),
+            "tables": []
+        }
 
     if url in visited or depth > max_depth:
-        return {}
+        return accumulated_data
     
     visited.add(url)
     print(f"Scraping: {url} Depth: {depth}")
 
     html = fetch_html(url)
     if not html: 
-        return {}
+        return accumulated_data
     
-    data = {
-        "url": url, 
-        "depth": depth, 
-        "links": extract_links(html), 
-        "emails": extract_emails(html), 
+    page_data = {
+        "links": set(extract_links(html)), 
+        "emails": set(extract_emails(html)), 
         "social": extract_social_links(html), 
-        "authors": extract_author_names(html), 
-        "phones": extract_phone_numbers(html, country),
-        "images": extract_images(html, download=DOWNLOAD_IMAGES), 
+        "authors": set(extract_author_names(html)), 
+        "phones": set(extract_phone_numbers(html, country)),
+        "images": set(extract_images(html, download=DOWNLOAD_IMAGES)), 
         "metadata": extract_metadata(html), 
-        "documents": extract_document_links(html),
+        "documents": set(extract_document_links(html)),
         "tables": extract_tables(html)
     }
+    
+    accumulated_data["links"].update(page_data["links"])
+    accumulated_data["emails"].update(page_data["emails"])
+    accumulated_data["authors"].update(page_data["authors"])
+    accumulated_data["phones"].update(page_data["phones"])
+    accumulated_data["images"].update(page_data["images"])
+    accumulated_data["documents"].update(page_data["documents"])
+    
+    for platform, links in page_data["social"].items():
+        if platform not in accumulated_data["social"]:
+            accumulated_data["social"][platform] = set()
+        accumulated_data["social"][platform].update(links)
+    
+    if not accumulated_data["metadata"] and page_data["metadata"]:
+        accumulated_data["metadata"] = page_data["metadata"]
+    
+    accumulated_data["tables"].extend(page_data["tables"])
 
     if depth < max_depth:
         internal_links = [
-            link for link in data["links"]
+            link for link in page_data["links"]
             if link.startswith('/') or url.split('/')[2] in link
         ]
 
         for link in internal_links:
             if link.startswith('/'):
-                base_url = '/'.join(url.split('/'[:3]))
+                base_url = '/'.join(url.split('/')[:3])
                 link = base_url + link
 
-            child_data = scrape_recursive(link, depth + 1, max_depth, visited, country)
-            if child_data:
-                if 'children' not in data:
-                    data['children'] = []
-                data['children'].append(child_data)
-
-    return data
+            accumulated_data = scrape_recursive(link, depth + 1, max_depth, visited, country, accumulated_data)
     
+    if depth == 1:
+        result = {
+            "url": url,
+            "depth": depth,
+            "links": list(accumulated_data["links"]),
+            "emails": list(accumulated_data["emails"]),
+            "social": {platform: list(links) for platform, links in accumulated_data["social"].items()},
+            "authors": list(accumulated_data["authors"]),
+            "phones": list(accumulated_data["phones"]),
+            "images": list(accumulated_data["images"]),
+            "metadata": accumulated_data["metadata"],
+            "documents": list(accumulated_data["documents"]),
+            "tables": accumulated_data["tables"]
+        }
+        return result
+    
+    return accumulated_data
+
+
 def scrape_parallel(urls, country="US", max_workers=5):
     """Scrape multiple URLs in parallel."""
     results = {}

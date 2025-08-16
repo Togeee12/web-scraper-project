@@ -1,5 +1,12 @@
-beautifulsoup4
-requests
+beautifulsoup4 
+requests 
 colorama
-phonenumbers
-tqdm 
+phonenumbers 
+tqdm
+pandas
+openpyxl
+schedule
+whois
+dnspython
+textblob
+langdetect
